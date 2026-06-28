@@ -4,20 +4,20 @@ Using Progressive Cactus for Multiple Sequence Alignment and Ancestral Genome Re
 
 ## Downloading Genome Assemblies From NCBI  
 
-Set up the ncbi_datasets conda environment:  
+1\. Set up the ncbi_datasets conda environment:  
 [Link to installation documentation](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/command-line-tools/download-and-install/)
 ```bash
 conda create -n ncbi_datasets -c conda-forge ncbi-datasets-cli
 conda activate ncbi_datasets
 ```  
 \
-Download a genome assembly using accession number:  
+2. Download a genome assembly using accession number:  
 [Link to genome download documentation](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/how-tos/genomes/download-genome/)
 ```bash
 datasets download genome accession "GCF_009873245.2" --filename "path/Balaenoptera_musculus_dataset.zip"
 ```
 \
-Download multiple genomes in a loop:  
+3. Download multiple genomes in a loop:  
 - Create a list containing genome assembly accesion numbers
 - Create a loop that downloads every genome from list into its own directory
 ```bash
@@ -39,36 +39,33 @@ The following commands are for:
 _RepeatMakser Version: 4.2.2_ which comes with _FamDB Format Version: 2.0.0_ which supports the _Dfam 3.9_ repeat library  
 
 ---
-Install RepeatMasker as a conda environment (installs search engine RMBlast and TRF as well):
+1\. Install RepeatMasker as a conda environment (installs search engine RMBlast and TRF as well):
 ```bash
 conda create -n RepeatMasker -c conda-forge -c bioconda repeatmasker=4.2.2 -y
 conda activate RepeatMasker
 ```
 \
-Check already downloaded FamDB partitions: 
+2. Check already downloaded FamDB partitions: 
 ```bash
 cd $CONDA_PREFIX/share/RepeatMasker
 python famdb.py info
 ```
 \
-Download required partition into the famdb directory (eg: Partition 7 [Mammalia] for masking Cetaceans)  
+3. Download required partition into the famdb directory (eg: Partition 7 [Mammalia] for masking Cetaceans)  
 Get Partition Download Links [Here](https://www.dfam.org/releases/Dfam_3.9/families/FamDB/)  
 ```bash
 cd $CONDA_PREFIX/share/RepeatMasker/Libraries/famdb
 aria2c -x 16 -s 16 -c --dir=$CONDA_PREFIX/RepeatMasker/Libraries/famdb https://www.dfam.org/releases/Dfam_3.9/families/FamDB/dfam39_full.7.h5.gz
 ```
 \
-Check number of repeats available for the ancestors and descendants of your taxon of interest
+4. Check number of repeats available for the ancestors and descendants of your taxon of interest
 ```bash
 python famdb.py lineage -ad cetacea
 python famdb.py -ad -f totals cetacea
 ```
 \
-Run RepeatMasker on genome assemblies  
+5. Run RepeatMasker on genome assemblies  
 [Link to RepeatMasker Documentation](https://github.com/Dfam-consortium/RepeatMasker/blob/master/repeatmasker.help)  
-```bash
-RepeatMasker -species cetacea -pa 6 -q -xsmall -dir /path/to/output genomic.fna
-```
 <details>
 <summary>Output Files Produced</summary>
 <ul><li>.masked → Masked fasta file</li>
@@ -76,14 +73,16 @@ RepeatMasker -species cetacea -pa 6 -q -xsmall -dir /path/to/output genomic.fna
 <li>.out → Annotation table of all detected repeats</li>
 <li>.cat -> Raw match data (can be used to generate the other output files without rerunning the whole program)</li></ul>
 </details>  
-
+```bash
+RepeatMasker -species cetacea -pa 6 -q -xsmall -dir /path/to/output genomic.fna
+```
 \
-If the .cat file exists and you only want to generate the .masked .tbl .out files again:  
+6. If the cat file exists and you only want to generate the masked, tbl, out files again:  
 ```bash
 ProcessRepeats -species cetacea -xsmall -maskSource genome.fna genomic.fna.cat.gz
 ```
 \
-Masking multiple genomes in a loop:
+7. Masking multiple genomes in a loop:
 - Create a list of genome assemblies (remove .fna from end)
 - Create a loop to mask every genome in list with output files for each in their own directories
 ```bash
