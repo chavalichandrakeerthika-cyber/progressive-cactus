@@ -83,8 +83,6 @@ If the .cat file exists and you only want to generate the .masked .tbl .out file
 ProcessRepeats -species cetacea -xsmall -maskSource genome.fna genomic.fna.cat.gz
 ```
 \
-NOTE:  When using the -species <> flag, RepeatMasker creates a cache of species/taxon-specific libraries extracted from FamDB, making it faster next time the same -species <> argument is used. This cache may require a bit of space (eg: ~50GB for cetacea), so consider masking all sequences using the same -species <> argument at once and deleting the cache before using a different -species <> argument.  
-\
 Masking multiple genomes in a loop:
 - Create a list of genome assemblies (remove .fna from end)
 - Create a loop to mask every genome in list with output files for each in their own directories
@@ -98,6 +96,7 @@ for n in ${genome_list[@]}; do
 done
 ```
 \
+NOTE:  When using the -species <> flag, RepeatMasker creates a cache of species/taxon-specific libraries extracted from FamDB, making it faster next time the same -species <> argument is used. This cache may require a bit of space (eg: ~50GB for cetacea), so consider masking all sequences using the same -species <> argument at once and deleting the cache before using a different -species <> argument.  
 
 
 
