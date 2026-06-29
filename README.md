@@ -5,7 +5,7 @@ Using Progressive Cactus for Multiple Sequence Alignment and Ancestral Genome Re
 ## Downloading Genome Assemblies From NCBI  
 
 1\. Set up the ncbi_datasets conda environment:  
-[Link to installation documentation](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/command-line-tools/download-and-install/)
+[Link to Installation Documentation](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/command-line-tools/download-and-install/)
 ```bash
 conda create -n ncbi_datasets -c conda-forge ncbi-datasets-cli
 ```
@@ -14,7 +14,7 @@ conda activate ncbi_datasets
 ```  
 \
 2. Download a genome assembly using accession number:  
-[Link to genome download documentation](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/how-tos/genomes/download-genome/)
+[Link to Genome Download Documentation](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/how-tos/genomes/download-genome/)
 ```bash
 datasets download genome accession "GCF_009873245.2" --filename "path/Balaenoptera_musculus_dataset.zip"
 ```
@@ -59,7 +59,7 @@ python famdb.py info
 ```
 \
 3. Download required partition into the famdb directory (eg: Partition 7 [Mammalia] for masking Cetaceans)  
-Get Partition Download Links [Here](https://www.dfam.org/releases/Dfam_3.9/families/FamDB/)  
+[Link to Download Partitions](https://www.dfam.org/releases/Dfam_3.9/families/FamDB/)  
 ```bash
 cd $CONDA_PREFIX/share/RepeatMasker/Libraries/famdb
 ```
