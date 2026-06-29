@@ -8,6 +8,8 @@ Using Progressive Cactus for Multiple Sequence Alignment and Ancestral Genome Re
 [Link to installation documentation](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/command-line-tools/download-and-install/)
 ```bash
 conda create -n ncbi_datasets -c conda-forge ncbi-datasets-cli
+```
+```bash
 conda activate ncbi_datasets
 ```  
 \
@@ -22,7 +24,8 @@ datasets download genome accession "GCF_009873245.2" --filename "path/Balaenopte
 - Create a loop that downloads every genome from list into its own directory
 ```bash
 genome_list=("GCF_028564815.1" "GCA_004363455.1" "GCA_029224305.1")
-
+```
+```bash
 for n in ${genome_list[@]}; do 
   mkdir -p path/genomes/${n}; 
   datasets download genome accession ${n} --filename "path/genomes/${n}/${n}_dataset.zip"; 
@@ -36,18 +39,22 @@ RepeatMasker masks genomes by comparing sequences to a known library of repeats 
 To find de novo repeats, use RepeatModeler to build a custom repeat library and then give that to RepeatMasker  
 
 The following commands are for:  
-_RepeatMakser Version: 4.2.2_ which comes with _FamDB Format Version: 2.0.0_ which supports the _Dfam 3.9_ repeat library  
+_RepeatMakser Version: 4.2.2_ and _FamDB Format Version: 2.0.0_ which supports the _Dfam 3.9_ repeat library  
 
 ---
 1\. Install RepeatMasker as a conda environment (installs search engine RMBlast and TRF as well):
 ```bash
 conda create -n RepeatMasker -c conda-forge -c bioconda repeatmasker=4.2.2 -y
+```
+```bash
 conda activate RepeatMasker
 ```
 \
 2. Check already downloaded FamDB partitions: 
 ```bash
 cd $CONDA_PREFIX/share/RepeatMasker
+```
+```bash
 python famdb.py info
 ```
 \
@@ -55,16 +62,20 @@ python famdb.py info
 Get Partition Download Links [Here](https://www.dfam.org/releases/Dfam_3.9/families/FamDB/)  
 ```bash
 cd $CONDA_PREFIX/share/RepeatMasker/Libraries/famdb
+```
+```bash
 aria2c -x 16 -s 16 -c --dir=$CONDA_PREFIX/RepeatMasker/Libraries/famdb https://www.dfam.org/releases/Dfam_3.9/families/FamDB/dfam39_full.7.h5.gz
 ```
 \
-4. Check number of repeats available for the ancestors and descendants of your taxon of interest
+4. Check number of repeats available for the ancestors and descendants of your taxon of interest:  
 ```bash
 python famdb.py lineage -ad cetacea
+```
+```bash
 python famdb.py -ad -f totals cetacea
 ```
 \
-5. Run RepeatMasker on genome assemblies  
+5. Run RepeatMasker on genome assemblies:  
 [Link to RepeatMasker Documentation](https://github.com/Dfam-consortium/RepeatMasker/blob/master/repeatmasker.help)  
 <details>
 <summary>Output Files Produced</summary>
@@ -73,6 +84,7 @@ python famdb.py -ad -f totals cetacea
 <li>.out → Annotation table of all detected repeats</li>
 <li>.cat -> Raw match data (can be used to generate the other output files without rerunning the whole program)</li></ul>
 </details>  
+
 ```bash
 RepeatMasker -species cetacea -pa 6 -q -xsmall -dir /path/to/output genomic.fna
 ```
@@ -82,12 +94,14 @@ RepeatMasker -species cetacea -pa 6 -q -xsmall -dir /path/to/output genomic.fna
 ProcessRepeats -species cetacea -xsmall -maskSource genome.fna genomic.fna.cat.gz
 ```
 \
-7. Masking multiple genomes in a loop:
+7. Masking multiple genomes in a loop:  
 - Create a list of genome assemblies (remove .fna from end)
 - Create a loop to mask every genome in list with output files for each in their own directories
-```bash
-genome_list=("GCF_028023285.1_mBalRic1.hap2_genomic" "GCF_028564815.1_mEubGla1.1.hap2._XY_genomic" "GCA_041834305.1_ASM4183430v1_genomic" "GCF_949987535.1_mBalAcu1.1_genomic" "GCF_965194805.1_mBalBor1.hap1.1_genomic" "GCF_965194825.1_mBalPhy2.hap1.1_genomic")
 
+```bash
+genome_list=("GCF_949987535.1_mBalAcu1.1_genomic" "GCF_965194805.1_mBalBor1.hap1.1_genomic" "GCF_965194825.1_mBalPhy2.hap1.1_genomic")
+```
+```bash
 for n in ${genome_list[@]}; do 
 	mkdir -p "/path/to/RepMask/${n}"; 
 	RepeatMasker -species cetacea -pa 6 -q -xsmall -dir "/path/to/RM/${n}" "${/}.fna"; 
@@ -95,7 +109,38 @@ for n in ${genome_list[@]}; do
 done
 ```
 \
-NOTE:  When using the -species <> flag, RepeatMasker creates a cache of species/taxon-specific libraries extracted from FamDB, making it faster next time the same -species <> argument is used. This cache may require a bit of space (eg: ~50GB for cetacea), so consider masking all sequences using the same -species <> argument at once and deleting the cache before using a different -species <> argument.  
+NOTE:  When using the -species <> flag, RepeatMasker creates a cache of species/taxon-specific libraries extracted from FamDB, making it faster next time the same -species <> argument is used. This cache may require a bit of space (eg: ~50GB for cetacea), so consider masking all sequences requiring the same -species <> argument before deleting the cache and using a different -species <> argument.  
+<br>
 
+## Downloading and Installing Cactus  
+1\. Set up cactus conda environment:  
+```bash
+conda create -n cactus -c bioconda -c conda-forge cactus=3.1.4
+```
+```bash
+conda activate cactus
+```
+2\. Test Progressive Cactus works their given example data:  
+NOTE: Temporary jobstore files can take up to hundreds of GB depending on the number/size of genomes being aligned
+```bash
+wget https://raw.githubusercontent.com/ComparativeGenomicsToolkit/cactus/master/examples/evolverMammals.txt
+```
+```bash
+cactus /path/to/temporary/jobstore /path/to/input_file/evolverMammals.txt /path/to/output_file/evolverMammals.hal
+```
+<br>
 
-
+## Running Progressive Cactus  
+1\. Creating the Cactus Input Seq File
+- Construct a phylogenetic tree in newick format
+- Every leaf in the tree must have a sequence provided
+- Branch lengths represent substitutions per site (default value: 1)
+- Nodes can be named or are automatically named Anc0, Anc1, etc
+```bash
+cat > cetaceans.txt
+((Bmus:0.00266658863064363509,Bede:0.00301108031167500301)AncBlue:0.00085135825141383284,Erob:0.00386804054184409878)AncGray;
+Bmus /path/to/soft/masked/genome/GCF_009873245.2_mBalMus1.pri.v3_genomic.fna.masked
+Bede /path/to/soft/masked/genome/GCA_052818205.1_BalEdn.hic.v1_genomic.fna.masked
+Erob /path/to/soft/masked/genome/GCF_028021215.1_mEscRob2.pri_genomic.fna.masked
+```
+Ctrl + D
