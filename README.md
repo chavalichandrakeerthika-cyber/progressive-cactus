@@ -121,7 +121,7 @@ conda create -n cactus -c bioconda -c conda-forge cactus=3.1.4
 conda activate cactus
 ```
 2\. Test Progressive Cactus works their given example data:  
-NOTE: Temporary jobstore files can take up to hundreds of GB depending on the number/size of genomes being aligned
+NOTE: Temporary jobstore files can take up to hundreds of GB depending on the number/size of genomes being aligned  
 ```bash
 wget https://raw.githubusercontent.com/ComparativeGenomicsToolkit/cactus/master/examples/evolverMammals.txt
 ```
@@ -143,4 +143,13 @@ Bmus /path/to/soft/masked/genome/GCF_009873245.2_mBalMus1.pri.v3_genomic.fna.mas
 Bede /path/to/soft/masked/genome/GCA_052818205.1_BalEdn.hic.v1_genomic.fna.masked
 Erob /path/to/soft/masked/genome/GCF_028021215.1_mEscRob2.pri_genomic.fna.masked
 ```
-Ctrl + D
+Ctrl + D  
+\
+2. Run progressive cactus  
+[Link to Cactus Documentation](https://github.com/ComparativeGenomicsToolkit/cactus/blob/master/doc/progressive.md)  
+```bash
+cactus /path/to/intermediate/jobStore /path/to/input_file/cetaceans.txt /path/to/output_file/cetaceans.hal --maxCores 24 --maxMemory 80G
+```
+\
+
+
