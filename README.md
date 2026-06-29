@@ -6,11 +6,14 @@ Using D-Genies to generate dot plots between 2 genomes
 ## Index  
 [Downloading Genome Assemblies From NCBI](#downloading-genome-assemblies-from-ncbi)  
 [Soft-masking Genomes with RepeatMasker](#soft-masking-genomes-with-repeatmasker)  
-
-
+[Downloading and Installing Cactus](#downloading-and-installing-cactus)  
+[Running Progressive Cactus](#running-progressive-cactus)  
+[HAL to MAF Conversion](#hal-to-maf-conversion)  
+[Looking at Copy Number Variation](#looking-at-copy-number-variation)  
+[Generating a Dot Plot Using D-Genies](#generating-a-dot-plot-using-d-genies)  
+<br>  
 
 ## Downloading Genome Assemblies From NCBI  
-
 1\. Set up the ncbi_datasets conda environment:  
 [Link to Installation Documentation](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/command-line-tools/download-and-install/)
 ```bash
@@ -187,7 +190,7 @@ for species in "${species_list[@]}"; do echo "$species"; awk -v sp="$species" '/
 ```  
 <br>
 
-## Generating a Dot Plot Between Ancestral and Descendant Genomes Using D-Genies  
+## Generating a Dot Plot Using D-Genies
 1\. Extract the reconstructed ancestral genome from the HAL file:  
 ```bash
 conda activate cactus
