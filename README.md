@@ -1,6 +1,13 @@
-# PROGRESSIVE CACTUS  
+# PROGRESSIVE CACTUS & D-GENIES  
 Using Progressive Cactus for Multiple Sequence Alignment and Ancestral Genome Reconstruction  
+Using D-Genies to generate dot plots between 2 genomes  
 <br>
+
+## Index  
+[Downloading Genome Assemblies From NCBI](#downloading-genome-assemblies-from-ncbi)  
+[Soft-masking Genomes with RepeatMasker](#soft-masking-genomes-with-repeatmasker)  
+
+
 
 ## Downloading Genome Assemblies From NCBI  
 
