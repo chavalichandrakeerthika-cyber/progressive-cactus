@@ -150,7 +150,8 @@ Ctrl + D
 ```bash
 cactus /path/to/intermediate/jobStore /path/to/input_file/cetaceans.txt /path/to/output_file/cetaceans.hal --maxCores 24 --maxMemory 80G
 ```
-\
+<br>
+
 ## HAL to MAF Conversion  
 1\. Convert binary HAL file to human-readable MAF file:  
 [Link to Cactus-hal2maf Documentation](https://github.com/ComparativeGenomicsToolkit/cactus/blob/master/doc/progressive.md#maf-export)  
@@ -190,7 +191,7 @@ hal2fasta /path/to/cetaceans.hal AncBlue > AncBlue.fasta
 ```bash
 hal2fasta /path/to/cetaceans.hal Bmus > Bmus.fasta
 ```
-NOTE: For extant descendant you can also use already downloaded NCBI genome instead of extracting from the HAL file  
+NOTE: For extant descendants, you can also download the NCBI genome instead of extracting from the HAL file  
 \
 2. Generate pairwise alignment file (PAF) between ancestor and descendant  
 ```bash
