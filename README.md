@@ -155,18 +155,70 @@ cactus /path/to/intermediate/jobStore /path/to/input_file/cetaceans.txt /path/to
 1\. Convert binary HAL file to human-readable MAF file:  
 [Link to Cactus-hal2maf Documentation](https://github.com/ComparativeGenomicsToolkit/cactus/blob/master/doc/progressive.md#maf-export)  
 ```bash
-podman run --privileged --rm -v /path/to/cactus/directory:path/to/cactus/directory quay.io/comparative-genomics-toolkit/cactus:v3.2.1;
-cactus-hal2maf  /path/to/jobStore /path/to/input_hal/cetaceans.hal /path/to/output_maf/cetaceans.maf.gz --refGenome Bmus --chunkSize 500000 --batchCount 1 --maxCores 20 --batchParallelHal2maf 10 --batchParallelTaf 4 --batchMemory 70G --maxMemory 80G --workDir /path/to/tmp
+podman run --privileged --rm -v /path/to/your/directory:path/to/your/directory quay.io/comparative-genomics-toolkit/cactus:v3.2.1;
+cactus-hal2maf  /path/to/jobStore /path/to/input_hal/cetaceans.hal /path/to/output_maf/cetaceans.maf.gz --refGenome Erob --chunkSize 500000 --batchCount 1 --maxCores 20 --batchParallelHal2maf 10 --batchParallelTaf 4 --batchMemory 70G --maxMemory 80G --workDir /path/to/tmp
 ```
 NOTE: Cactus conda package doesn't have the cactus-hal2maf tool, which is why we are using the cactus docker image.    
 Also, make sure the --worDir tmp directory exists in a place with sufficient space.  
-\
-2. Extract alignment blocks corresponding to only a particular gene from HAL file  
-- Get the gene's coordinates with respect to the --refGenome <> from NCBI [Here](https://www.ncbi.nlm.nih.gov/datasets/gene/)
+<br>
+
+## Looking at Copy Number Variation
+1\. Extract alignment blocks corresponding to only a particular gene from the HAL file:  
+- Get gene coordinates with respect to the --refGenome <> from NCBI [Here](https://www.ncbi.nlm.nih.gov/datasets/gene/)
 ```bash
 podman run --privileged --rm -v /path/to/cactus/directory:/path/to/cactus/directory quay.io/comparative-genomics-toolkit/cactus:v3.2.1;
-cactus-hal2maf /path/to/jobStore /path/to/input_hal/cetaceans.hal /path/to/output_maf/cetaceans_gene1.maf.gz --refGenome Bmus --refSequence NC_090843.1 --start 58000972 --length 13531 --maxCores 20 --batchCores 20 --batchParallelHal2maf 10 --batchParallelTaf 4 --batchMemory 70G --maxMemory 80G --workDir /path/to/tmp
+cactus-hal2maf /path/to/jobStore /path/to/input_hal/cetaceans.hal /path/to/output_maf/cetaceans_gene_p53.maf.gz --refGenome Erob --refSequence NC_090843.1 --start 58000972 --length 13531 --maxCores 20 --batchCores 20 --batchParallelHal2maf 10 --batchParallelTaf 4 --batchMemory 70G --maxMemory 80G --workDir /path/to/tmp
 ```
+\
+2. Look at the number of sequences from each species in each block:  
+```bash
+species_list=("Erob" "Bmus" "Bede")
+```
+```bash  
+for species in "${species_list[@]}"; do echo "$species"; awk -v sp="$species" '/^a/{if(block) print count; count=0; block++} /^s/ && $2~"^"sp"\\\."{count++} END{print count}' "cetaceans_gene_p53.maf.gz"; echo; done
+```  
+<br>
 
-## Downstream Analysis
-1\. Extract
+## Generating a Dot Plot Between Ancestral and Descendant Genomes Using D-Genies  
+1\. Extract the reconstructed ancestral genome from the HAL file:  
+```bash
+conda activate cactus
+```
+```bash
+hal2fasta /path/to/cetaceans.hal AncBlue > AncBlue.fasta
+```
+```bash
+hal2fasta /path/to/cetaceans.hal Bmus > Bmus.fasta
+```
+NOTE: For extant descendant you can also use already downloaded NCBI genome instead of extracting from the HAL file  
+\
+2. Generate pairwise alignment file (PAF) between ancestor and descendant  
+```bash
+conda activate cactus
+```  
+```bash
+minimap2 -x asm20 -p 0.4 -N 50 --secondary=yes -t 16 Bmus.fasta AncBlue.fasta -o Bmus_AncBlue.paf
+```  
+\
+3. Set up the dgenies conda environment:  
+```bash
+conda create -n dgenies -c conda-forge -c bioconda dgenies
+```
+```bash
+conda activate dgenies
+```
+```bash
+dgenies run -p 5055
+```
+\
+4. Forward port to your local computer:
+- Open new terminal on local computer for the following command
+```bash
+ssh -p <> -L 5055:localhost:5055 username@<ip_address>
+```
+\
+5. Open D-Genies webpage on copmuter browser: http://127.0.0.1:5055/  
+Click on the 'Plot Alignment' tab and upload the FASTA and PAF files. 
+Click 'Submit' and export results as an HTML webpage.
+
+
