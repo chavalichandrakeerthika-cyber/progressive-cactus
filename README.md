@@ -127,7 +127,7 @@ wget https://raw.githubusercontent.com/ComparativeGenomicsToolkit/cactus/master/
 ```bash
 cactus /path/to/temporary/jobStore /path/to/input_file/evolverMammals.txt /path/to/output_file/evolverMammals.hal
 ```
-NOTE: Temporary jobStore files can take up to hundreds of GB depending on the number/size of genomes being aligned. Also make store jobStore directory doesn't already exist! 
+NOTE: Temporary jobStore files can take up to hundreds of GB depending on the number/size of genomes being aligned. Also make store jobStore directory doesn't already exist!  
 <br>
 
 ## Running Progressive Cactus  
