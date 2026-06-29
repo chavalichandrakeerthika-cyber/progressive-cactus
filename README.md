@@ -125,9 +125,9 @@ conda activate cactus
 wget https://raw.githubusercontent.com/ComparativeGenomicsToolkit/cactus/master/examples/evolverMammals.txt
 ```
 ```bash
-cactus /path/to/temporary/jobstore /path/to/input_file/evolverMammals.txt /path/to/output_file/evolverMammals.hal
+cactus /path/to/temporary/jobStore /path/to/input_file/evolverMammals.txt /path/to/output_file/evolverMammals.hal
 ```
-NOTE: Temporary jobstore files can take up to hundreds of GB depending on the number/size of genomes being aligned  
+NOTE: Temporary jobStore files can take up to hundreds of GB depending on the number/size of genomes being aligned. Also make store jobStore directory doesn't already exist! 
 <br>
 
 ## Running Progressive Cactus  
@@ -151,5 +151,22 @@ Ctrl + D
 cactus /path/to/intermediate/jobStore /path/to/input_file/cetaceans.txt /path/to/output_file/cetaceans.hal --maxCores 24 --maxMemory 80G
 ```
 \
+## HAL to MAF Conversion  
+1\. Convert binary HAL file to human-readable MAF file:  
+[Link to Cactus-hal2maf Documentation](https://github.com/ComparativeGenomicsToolkit/cactus/blob/master/doc/progressive.md#maf-export)  
+```bash
+podman run --privileged --rm -v /path/to/cactus/directory:path/to/cactus/directory quay.io/comparative-genomics-toolkit/cactus:v3.2.1;
+cactus-hal2maf  /path/to/jobStore /path/to/input_hal/cetaceans.hal /path/to/output_maf/cetaceans.maf.gz --refGenome Bmus --chunkSize 500000 --batchCount 1 --maxCores 20 --batchParallelHal2maf 10 --batchParallelTaf 4 --batchMemory 70G --maxMemory 80G --workDir /path/to/tmp
+```
+NOTE: Cactus conda package doesn't have the cactus-hal2maf tool, which is why we are using the cactus docker image.    
+Also, make sure the --worDir tmp directory exists in a place with sufficient space.  
+\
+2. Extract alignment blocks corresponding to only a particular gene from HAL file  
+- Get the gene's coordinates with respect to the --refGenome <> from NCBI [Here](https://www.ncbi.nlm.nih.gov/datasets/gene/)
+```bash
+podman run --privileged --rm -v /path/to/cactus/directory:/path/to/cactus/directory quay.io/comparative-genomics-toolkit/cactus:v3.2.1;
+cactus-hal2maf /path/to/jobStore /path/to/input_hal/cetaceans.hal /path/to/output_maf/cetaceans_gene1.maf.gz --refGenome Bmus --refSequence NC_090843.1 --start 58000972 --length 13531 --maxCores 20 --batchCores 20 --batchParallelHal2maf 10 --batchParallelTaf 4 --batchMemory 70G --maxMemory 80G --workDir /path/to/tmp
+```
 
-
+## Downstream Analysis
+1\. Extract
