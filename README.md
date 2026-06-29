@@ -120,14 +120,14 @@ conda create -n cactus -c bioconda -c conda-forge cactus=3.1.4
 ```bash
 conda activate cactus
 ```
-2\. Test Progressive Cactus works their given example data:  
-NOTE: Temporary jobstore files can take up to hundreds of GB depending on the number/size of genomes being aligned  
+2\. Test Progressive Cactus works their given example data:   
 ```bash
 wget https://raw.githubusercontent.com/ComparativeGenomicsToolkit/cactus/master/examples/evolverMammals.txt
 ```
 ```bash
 cactus /path/to/temporary/jobstore /path/to/input_file/evolverMammals.txt /path/to/output_file/evolverMammals.hal
 ```
+NOTE: Temporary jobstore files can take up to hundreds of GB depending on the number/size of genomes being aligned  
 <br>
 
 ## Running Progressive Cactus  
