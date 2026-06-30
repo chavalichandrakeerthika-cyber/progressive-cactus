@@ -222,7 +222,7 @@ conda activate dgenies
 dgenies run -p 5055
 ```
 \
-4. Forward port to your local computer:
+4. Forward the port:
 - Open new terminal on local computer for the following command
 ```bash
 ssh -p <> -L 5055:localhost:5055 username@<ip_address>
