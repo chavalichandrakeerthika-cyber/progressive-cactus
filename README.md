@@ -119,8 +119,8 @@ for n in ${genome_list[@]}; do
 done
 ```
 \
-NOTE:  When using the -species <> flag, RepeatMasker creates a cache of species/taxon-specific libraries extracted from FamDB, making it faster next time the same -species <> argument is used. This cache may require a bit of space (eg: ~50GB for cetacea), so consider masking all sequences requiring the same -species <> argument before deleting the cache and using a different -species <> argument.  
-<br>
+NOTE:  When using the -species <> flag, RepeatMasker creates a cache of species/taxon-specific libraries extracted from FamDB, making it faster next time the same -species <> argument is used.  
+<br>  
 
 ## Downloading and Installing Cactus  
 1\. Set up cactus conda environment:  
