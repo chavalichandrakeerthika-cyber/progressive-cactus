@@ -6,5 +6,5 @@ Dot plots were made between extant descendants and their immediate ancestral nod
 Files are named as <extant>_<ancestor>_dotplot.html  
 
 As a "control", a dot plot between two closely related extant (sister) species was also generated: Bric_Bede_dotplot.html  
-(This plot had less noise and was muhc cleaner than the ones with the ancestors).
+(This plot had less noise and was much less fragmented than the ones with the ancestors).
 
